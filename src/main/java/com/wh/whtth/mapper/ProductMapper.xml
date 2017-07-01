@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wh.whtth.idao.ProductMapper" >
+  <resultMap id="BaseResultMap" type="com.wh.whtth.model.Product" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="shopid" property="shopid" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="picture" property="picture" jdbcType="VARCHAR" />
+    <result column="productdesc" property="productdesc" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="repertory" property="repertory" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="clicknum" property="clicknum" jdbcType="INTEGER" />
+    <result column="collectnum" property="collectnum" jdbcType="INTEGER" />
+    <result column="auditstate" property="auditstate" jdbcType="VARCHAR" />
+    <result column="sortid" property="sortid" jdbcType="BIGINT" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, shopid, name, picture, productdesc, price, repertory, state, clicknum, collectnum, 
+    auditstate,sortid,title
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from wh_product
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="checkPendingProducts" resultMap="BaseResultMap" parameterType="com.wh.whtth.vo.ViewVo" >
+    select 
+    <include refid="Base_Column_List" />
+    from wh_product
+    where
+    auditstate = 1
+    and state = 1
+    order by id
+    limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+  </select>
+  
+  <select id="listValidProduct" resultMap="BaseResultMap" parameterType="com.wh.whtth.vo.ViewVo" >
+    select 
+    <include refid="Base_Column_List" />
+    from wh_product
+    where
+ 	state = 1
+ 	and shopid = #{id,jdbcType=BIGINT}
+    order by id
+    limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+  </select>
+  <select id="listInvalidProduct" resultMap="BaseResultMap" parameterType="com.wh.whtth.vo.ViewVo" >
+    select 
+    <include refid="Base_Column_List" />
+    from wh_product
+    where
+ 	state = 0
+ 	and shopid = #{id,jdbcType=BIGINT}
+    order by id
+    limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+  </select>
+  <resultMap id="mapResultMap" type="java.util.Map" />
+   <select id="listValidProductById" resultMap="mapResultMap">
+    select 
+    a.id,a.picture,a.name,a.sortid,b.sortname
+    from wh_product a,wh_product_sort b
+    where
+    a.sortid = b.id
+ 	and state = 1
+ 	and auditstate = 2
+ 	and shopid = #{id,jdbcType=BIGINT}
+ 	and sortid = #{sortid,jdbcType=BIGINT}
+ 	order by id
+ 	limit 0,4
+  </select>
+  
+   <select id="getShopinfoBySortid" resultMap="mapResultMap">
+    select 
+    a.id,a.picture,a.name,a.sortid,b.sortname
+    from wh_product a,wh_product_sort b
+    where
+    a.sortid = b.id
+ 	and state = 1
+ 	and auditstate = 2
+ 	and shopid = #{id,jdbcType=BIGINT}
+ 	and sortid = #{sortid,jdbcType=BIGINT}
+ 	order by id
+  </select>
+  
+  <select id="checkProductBySort" resultType="java.lang.Integer" parameterType="java.lang.String">
+    select 
+    count(1)
+    from wh_product
+    where
+ 	sortid = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from wh_product
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wh.whtth.model.Product" >
+    insert into wh_product (id, shopid, name, 
+      picture, productdesc, price, 
+      repertory, state, clicknum, 
+      collectnum, auditstate,sortid,title)
+    values (#{id,jdbcType=BIGINT}, #{shopid,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
+      #{picture,jdbcType=VARCHAR}, #{productdesc,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, 
+      #{repertory,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{clicknum,jdbcType=INTEGER}, 
+      #{collectnum,jdbcType=INTEGER}, #{auditstate,jdbcType=VARCHAR},#{sortid,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wh.whtth.model.Product" >
+    insert into wh_product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="shopid != null" >
+        shopid,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="picture != null" >
+        picture,
+      </if>
+      <if test="productdesc != null" >
+        productdesc,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="repertory != null" >
+        repertory,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="clicknum != null" >
+        clicknum,
+      </if>
+      <if test="collectnum != null" >
+        collectnum,
+      </if>
+      <if test="auditstate != null" >
+        auditstate,
+      </if>
+      <if test="sortid != null" >
+        sortid,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="shopid != null" >
+        #{shopid,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null" >
+        #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="productdesc != null" >
+        #{productdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="repertory != null" >
+        #{repertory,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="clicknum != null" >
+        #{clicknum,jdbcType=INTEGER},
+      </if>
+      <if test="collectnum != null" >
+        #{collectnum,jdbcType=INTEGER},
+      </if>
+      <if test="auditstate != null" >
+        #{auditstate,jdbcType=VARCHAR},
+      </if>
+      <if test="sortid != null" >
+        #{sortid,jdbcType=BIGINT},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wh.whtth.model.Product" >
+    update wh_product
+    <set >
+      <if test="shopid != null" >
+        shopid = #{shopid,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null" >
+        picture = #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="productdesc != null" >
+        productdesc = #{productdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="repertory != null" >
+        repertory = #{repertory,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="clicknum != null" >
+        clicknum = #{clicknum,jdbcType=INTEGER},
+      </if>
+      <if test="collectnum != null" >
+        collectnum = #{collectnum,jdbcType=INTEGER},
+      </if>
+      <if test="auditstate != null" >
+        auditstate = #{auditstate,jdbcType=VARCHAR},
+      </if>
+      <if test="sortid != null" >
+        sortid = #{sortid,jdbcType=BIGINT},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wh.whtth.model.Product" >
+    update wh_product
+    set shopid = #{shopid,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      picture = #{picture,jdbcType=VARCHAR},
+      productdesc = #{productdesc,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      repertory = #{repertory,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      clicknum = #{clicknum,jdbcType=INTEGER},
+      collectnum = #{collectnum,jdbcType=INTEGER},
+      auditstate = #{auditstate,jdbcType=VARCHAR},
+      sortid = #{sortid,jdbcType=BIGINT},
+      title = #{title,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wh.whtth.idao.ShoppingCartMapper" >
+  <resultMap id="BaseResultMap" type="com.wh.whtth.model.ShoppingCart" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="userid" property="userid" jdbcType="BIGINT" />
+    <result column="productid" property="productid" jdbcType="BIGINT" />
+    <result column="shopid" property="shopid" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userid, productid, shopid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from wh_shopping_cart
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from wh_shopping_cart
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wh.whtth.model.ShoppingCart" >
+    insert into wh_shopping_cart (id, userid, productid, 
+      shopid)
+    values (#{id,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, #{productid,jdbcType=BIGINT}, 
+      #{shopid,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wh.whtth.model.ShoppingCart" >
+    insert into wh_shopping_cart
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="productid != null" >
+        productid,
+      </if>
+      <if test="shopid != null" >
+        shopid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="productid != null" >
+        #{productid,jdbcType=BIGINT},
+      </if>
+      <if test="shopid != null" >
+        #{shopid,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wh.whtth.model.ShoppingCart" >
+    update wh_shopping_cart
+    <set >
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="productid != null" >
+        productid = #{productid,jdbcType=BIGINT},
+      </if>
+      <if test="shopid != null" >
+        shopid = #{shopid,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wh.whtth.model.ShoppingCart" >
+    update wh_shopping_cart
+    set userid = #{userid,jdbcType=BIGINT},
+      productid = #{productid,jdbcType=BIGINT},
+      shopid = #{shopid,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <resultMap id="mapResultMap" type="java.util.Map"/>
+  <select id="shoppingCartInThis" resultMap="mapResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from wh_shopping_cart
+    where userid = #{userid,jdbcType=BIGINT}
+    and shopid = #{shopid,jdbcType=BIGINT}
+  </select>
+  
+  <select id="privateShoppingCart" resultMap="mapResultMap">
+  	select 
+    a.shopid,b.name,b.picture,count(num) num
+    from wh_shopping_cart a,wh_shop b
+    where 
+    a.shopid = b.id
+    and userid = #{userid,jdbcType=BIGINT}
+    group by a.shopid,b.name,b.picture
+  </select>
+  
+  <select id="getNextval" resultType="java.lang.Integer">
+  select AUTO_INCREMENT id from INFORMATION_SCHEMA.TABLES  
+	where TABLE_NAME='wh_order'
+  </select>
+</mapper>

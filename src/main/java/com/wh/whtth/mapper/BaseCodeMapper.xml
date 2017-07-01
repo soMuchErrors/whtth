@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wh.whtth.idao.BaseCodeMapper" >
+  <resultMap id="BaseResultMap" type="com.wh.whtth.model.BaseCode" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="codetype" property="codetype" jdbcType="INTEGER" />
+    <result column="codenum" property="codenum" jdbcType="VARCHAR" />
+    <result column="codename" property="codename" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, codetype, codenum, codename
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from wh_base_code
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from wh_base_code
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wh.whtth.model.BaseCode" >
+    insert into wh_base_code (id, codetype, codenum, 
+      codename)
+    values (#{id,jdbcType=BIGINT}, #{codetype,jdbcType=INTEGER}, #{codenum,jdbcType=VARCHAR}, 
+      #{codename,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wh.whtth.model.BaseCode" >
+    insert into wh_base_code
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="codetype != null" >
+        codetype,
+      </if>
+      <if test="codenum != null" >
+        codenum,
+      </if>
+      <if test="codename != null" >
+        codename,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="codetype != null" >
+        #{codetype,jdbcType=INTEGER},
+      </if>
+      <if test="codenum != null" >
+        #{codenum,jdbcType=VARCHAR},
+      </if>
+      <if test="codename != null" >
+        #{codename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wh.whtth.model.BaseCode" >
+    update wh_base_code
+    <set >
+      <if test="codetype != null" >
+        codetype = #{codetype,jdbcType=INTEGER},
+      </if>
+      <if test="codenum != null" >
+        codenum = #{codenum,jdbcType=VARCHAR},
+      </if>
+      <if test="codename != null" >
+        codename = #{codename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wh.whtth.model.BaseCode" >
+    update wh_base_code
+    set codetype = #{codetype,jdbcType=INTEGER},
+      codenum = #{codenum,jdbcType=VARCHAR},
+      codename = #{codename,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <resultMap id="MapResultMap" type="java.util.Map" />
+  <select id="showTrade" resultMap="MapResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from wh_base_code
+    where codetype = 2
+  </select>
+</mapper>

@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wh.whtth.idao.ShopMapper" >
+  <resultMap id="BaseResultMap" type="com.wh.whtth.model.Shop" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="BIGINT" />
+    <result column="shopdesc" property="shopdesc" jdbcType="VARCHAR" />
+    <result column="picture" property="picture" jdbcType="VARCHAR" />
+    <result column="discount" property="discount" jdbcType="DOUBLE" />
+    <result column="paymentcode" property="paymentcode" jdbcType="VARCHAR" />
+    <result column="paymentlink" property="paymentlink" jdbcType="VARCHAR" />
+    <result column="postage" property="postage" jdbcType="DOUBLE" />
+    <result column="telphone" property="telphone" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="trade" property="trade" jdbcType="VARCHAR" />
+    <result column="pushmoney" property="pushmoney" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, userid, shopdesc, picture, discount, paymentcode, paymentlink, postage, 
+    telphone, address, state, trade, pushmoney
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from wh_shop
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="listValidShops" resultMap="BaseResultMap" parameterType="com.wh.whtth.vo.ViewVo" >
+    select 
+    <include refid="Base_Column_List" />
+    from wh_shop
+    where
+    state = 1
+    order by id
+    limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+  </select>
+  <select id="listInvalidShops" resultMap="BaseResultMap" parameterType="com.wh.whtth.vo.ViewVo" >
+    select 
+    <include refid="Base_Column_List" />
+    from wh_shop
+    where
+    state = 0
+    order by id
+    limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from wh_shop
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wh.whtth.model.Shop" >
+    insert into wh_shop (id, name, userid, 
+      shopdesc, picture, discount, 
+      paymentcode, paymentlink, postage, 
+      telphone, address, state, 
+      trade, pushmoney)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{userid,jdbcType=BIGINT}, 
+      #{shopdesc,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, #{discount,jdbcType=DOUBLE}, 
+      #{paymentcode,jdbcType=VARCHAR}, #{paymentlink,jdbcType=VARCHAR}, #{postage,jdbcType=DOUBLE}, 
+      #{telphone,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
+      #{trade,jdbcType=VARCHAR}, #{pushmoney,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wh.whtth.model.Shop" >
+    insert into wh_shop
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="shopdesc != null" >
+        shopdesc,
+      </if>
+      <if test="picture != null" >
+        picture,
+      </if>
+      <if test="discount != null" >
+        discount,
+      </if>
+      <if test="paymentcode != null" >
+        paymentcode,
+      </if>
+      <if test="paymentlink != null" >
+        paymentlink,
+      </if>
+      <if test="postage != null" >
+        postage,
+      </if>
+      <if test="telphone != null" >
+        telphone,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="trade != null" >
+        trade,
+      </if>
+      <if test="pushmoney != null" >
+        pushmoney,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="shopdesc != null" >
+        #{shopdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null" >
+        #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="discount != null" >
+        #{discount,jdbcType=DOUBLE},
+      </if>
+      <if test="paymentcode != null" >
+        #{paymentcode,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentlink != null" >
+        #{paymentlink,jdbcType=VARCHAR},
+      </if>
+      <if test="postage != null" >
+        #{postage,jdbcType=DOUBLE},
+      </if>
+      <if test="telphone != null" >
+        #{telphone,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="trade != null" >
+        #{trade,jdbcType=VARCHAR},
+      </if>
+      <if test="pushmoney != null" >
+        #{pushmoney,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wh.whtth.model.Shop" >
+    update wh_shop
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="shopdesc != null" >
+        shopdesc = #{shopdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null" >
+        picture = #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="discount != null" >
+        discount = #{discount,jdbcType=DOUBLE},
+      </if>
+      <if test="paymentcode != null" >
+        paymentcode = #{paymentcode,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentlink != null" >
+        paymentlink = #{paymentlink,jdbcType=VARCHAR},
+      </if>
+      <if test="postage != null" >
+        postage = #{postage,jdbcType=DOUBLE},
+      </if>
+      <if test="telphone != null" >
+        telphone = #{telphone,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="trade != null" >
+        trade = #{trade,jdbcType=VARCHAR},
+      </if>
+      <if test="pushmoney != null" >
+        pushmoney = #{pushmoney,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wh.whtth.model.Shop" >
+    update wh_shop
+    set name = #{name,jdbcType=VARCHAR},
+      userid = #{userid,jdbcType=BIGINT},
+      shopdesc = #{shopdesc,jdbcType=VARCHAR},
+      picture = #{picture,jdbcType=VARCHAR},
+      discount = #{discount,jdbcType=DOUBLE},
+      paymentcode = #{paymentcode,jdbcType=VARCHAR},
+      paymentlink = #{paymentlink,jdbcType=VARCHAR},
+      postage = #{postage,jdbcType=DOUBLE},
+      telphone = #{telphone,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      trade = #{trade,jdbcType=VARCHAR},
+      pushmoney = #{pushmoney,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  	  <resultMap id="shopManageResultMap" type="com.wh.whtth.vo.ShopManageVo">
+	  		<result property="shop.id" column="shop_id"/>  
+			<result property="shop.name" column="shop_name"/>  
+			<result property="shop.address" column="shop_address"/>  
+			<result property="shop.picture" column="shop_picture"/>  
+			<result property="shop.discount" column="shop_discount"/>  
+			<result property="shop.pushmoney" column="shop_pushmoney"/>  
+			<result property="shop.userid" column="shop_userid"/>  
+			<result property="shop.shopdesc" column="shop_desc"/>  
+			<result property="shop.paymentcode" column="shop_paymentcode"/>  
+			<result property="shop.paymentlink" column="shop_paymentlink"/>  
+			<result property="shop.postage" column="shop_postage"/>  
+			<result property="shop.telphone" column="shop_telphone"/>  
+			<result property="shop.state" column="shop_state"/>  
+			<result property="shop.trade" column="shop_trade"/>
+	  		<result property="user.id" column="user_id"/>  
+			<result property="user.name" column="user_name"/>  
+			<result property="user.phonenum" column="user_phonenum"/>  
+			<result property="user.nickname" column="user_nickname"/>  
+			<result property="user.idcardNum" column="user_idcard_num"/>  
+			<result property="user.userType" column="user_type"/>  
+			<result property="user.balance" column="user_balance"/>  
+			<result property="user.subaccout" column="user_subaccount"/>  
+			<result property="user.paypassword" column="user_paypassword"/>  
+			<result property="user.picture" column="user_picture"/>  
+			<result property="user.email" column="user_email"/>  
+			<result property="user.state" column="user_state"/>  
+	  </resultMap>
+	  
+	  <select id="view" parameterType="com.wh.whtth.vo.ViewVo" resultMap="shopManageResultMap">
+	SELECT 
+	    A.id AS shop_id,
+	    A.name AS shop_name,
+	    A.userid AS shop_userid,
+	    A.shopdesc AS shop_desc,
+	    A.picture AS shop_picture,
+	    A.discount AS shop_discount,
+	    A.paymentcode AS shop_paymentcode,
+	    A.paymentlink AS shop_paymentlink,
+	    A.postage AS shop_postage,
+	    A.telphone AS shop_telphone,
+	    A.address AS shop_address,
+	    A.state AS shop_state,
+	    A.trade AS shop_trade,
+	    A.pushmoney AS shop_pushmoney,
+	    B.id AS user_id,
+	    B.name AS user_name,
+	    B.phonenum AS user_phonenum,
+	    B.nickname AS user_nickname,
+	    B.idcard_num AS user_idcard_num,
+	    B.user_type AS user_type,
+	    B.balance AS user_balance,
+	    B.subaccout AS user_subaccount,
+	    B.paypassword AS user_paypassword,
+	    B.picture AS user_picture,
+	    B.email AS user_email,
+	    B.state AS user_state
+	FROM
+	    wh.wh_shop A,
+	    wh.wh_user B
+	WHERE
+	    A.userid = B.id
+	ORDER BY a.id
+	LIMIT #{start,jdbcType=INTEGER} , #{pagesize,jdbcType=INTEGER}
+	  </select>
+	  
+	  <select id="viewById" parameterType="com.wh.whtth.vo.ViewVo" resultMap="shopManageResultMap">
+	SELECT 
+	    A.id AS shop_id,
+	    A.name AS shop_name,
+	    A.userid AS shop_userid,
+	    A.shopdesc AS shop_desc,
+	    A.picture AS shop_picture,
+	    A.discount AS shop_discount,
+	    A.paymentcode AS shop_paymentcode,
+	    A.paymentlink AS shop_paymentlink,
+	    A.postage AS shop_postage,
+	    A.telphone AS shop_telphone,
+	    A.address AS shop_address,
+	    A.state AS shop_state,
+	    A.trade AS shop_trade,
+	    A.pushmoney AS shop_pushmoney,
+	    B.id AS user_id,
+	    B.name AS user_name,
+	    B.phonenum AS user_phonenum,
+	    B.nickname AS user_nickname,
+	    B.idcard_num AS user_idcard_num,
+	    B.user_type AS user_type,
+	    B.balance AS user_balance,
+	    B.subaccout AS user_subaccount,
+	    B.paypassword AS user_paypassword,
+	    B.picture AS user_picture,
+	    B.email AS user_email,
+	    B.state AS user_state
+	FROM
+	    wh.wh_shop A,
+	    wh.wh_user B
+	WHERE
+	    A.userid = B.id
+	    and A.id = #{id,jdbcType=BIGINT}
+	ORDER BY a.id
+	  </select>
+	  
+	 <resultMap id="mapResultMap" type="java.util.Map" />
+	 <select id="showShops" parameterType="com.wh.whtth.vo.ViewVo" resultMap="mapResultMap">
+	 select 
+	 	id,picture,address,name
+	 from 
+	 	wh_shop
+	 <if test="trade != null" >
+	 	where trade = #{trade,jdbcType=VARCHAR}
+	 </if>
+	 order by id
+	 limit #{start,jdbcType=INTEGER} , #{pagesize,jdbcType=INTEGER}
+	 </select>
+</mapper>

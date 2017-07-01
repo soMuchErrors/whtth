@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wh.whtth.idao.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.wh.whtth.model.Order" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="userid" property="userid" jdbcType="BIGINT" />
+    <result column="shopid" property="shopid" jdbcType="BIGINT" />
+    <result column="addressid" property="addressid" jdbcType="BIGINT" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="postmanid" property="postmanid" jdbcType="BIGINT" />
+    <result column="createtime" property="createtime" jdbcType="VARCHAR" />
+    <result column="enddtime" property="enddtime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userid, shopid, addressid, amount, state, postmanid, createtime, enddtime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from wh_order
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from wh_order
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wh.whtth.model.Order" >
+    insert into wh_order (id, userid, shopid, 
+      addressid, amount, state, 
+      postmanid, createtime, enddtime
+      )
+    values (#{id,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, #{shopid,jdbcType=BIGINT}, 
+      #{addressid,jdbcType=BIGINT}, #{amount,jdbcType=DOUBLE}, #{state,jdbcType=INTEGER}, 
+      #{postmanid,jdbcType=BIGINT}, #{createtime,jdbcType=VARCHAR}, #{enddtime,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wh.whtth.model.Order" >
+    insert into wh_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="shopid != null" >
+        shopid,
+      </if>
+      <if test="addressid != null" >
+        addressid,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="postmanid != null" >
+        postmanid,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="enddtime != null" >
+        enddtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="shopid != null" >
+        #{shopid,jdbcType=BIGINT},
+      </if>
+      <if test="addressid != null" >
+        #{addressid,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="postmanid != null" >
+        #{postmanid,jdbcType=BIGINT},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="enddtime != null" >
+        #{enddtime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wh.whtth.model.Order" >
+    update wh_order
+    <set >
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="shopid != null" >
+        shopid = #{shopid,jdbcType=BIGINT},
+      </if>
+      <if test="addressid != null" >
+        addressid = #{addressid,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="postmanid != null" >
+        postmanid = #{postmanid,jdbcType=BIGINT},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="enddtime != null" >
+        enddtime = #{enddtime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wh.whtth.model.Order" >
+    update wh_order
+    set userid = #{userid,jdbcType=BIGINT},
+      shopid = #{shopid,jdbcType=BIGINT},
+      addressid = #{addressid,jdbcType=BIGINT},
+      amount = #{amount,jdbcType=DOUBLE},
+      state = #{state,jdbcType=INTEGER},
+      postmanid = #{postmanid,jdbcType=BIGINT},
+      createtime = #{createtime,jdbcType=VARCHAR},
+      enddtime = #{enddtime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  	<resultMap id="mapResultMap" type="java.util.Map"/>
+    <select id="shoppingInfo" resultMap="mapResultMap" parameterType="com.wh.whtth.vo.ViewVo" >
+    SELECT 
+    a.id, a.shopid, b.name, a.amount, a.createtime
+	FROM
+	    wh_order a,
+	    wh_shop b
+	WHERE
+	    a.shopid = b.id AND a.userid = #{id,jdbcType=BIGINT}
+	ORDER BY a.id
+	limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+  </select>
+  
+  <select id="showOrders" resultMap="mapResultMap" parameterType="com.wh.whtth.vo.ViewVo" >
+    SELECT 
+    a.userid,b.name username,c.fulladdress,b.phonenum,a.id orderid
+	FROM
+	    wh_order a,
+	    wh_user b,
+	    wh_shipping_address c
+	WHERE
+	    a.userid = b.id 
+	    and a.addressid = c.id
+	    AND a.shopid = #{id,jdbcType=BIGINT}
+	    and a.state = 1
+	ORDER BY a.id
+	limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+  </select>
+  
+  <select id="SelectOrderinfoById" resultType="java.util.Map">
+    SELECT 
+    a.userid,b.name username,c.fulladdress,b.phonenum,a.id orderid,a.createtime
+	FROM
+	    wh_order a,
+	    wh_user b,
+	    wh_shipping_address c
+	WHERE
+	    a.userid = b.id 
+	    and a.addressid = c.id
+	    AND a.id = #{id,jdbcType=BIGINT}
+  </select>
+  
+   <select id="getDetailsById" resultMap="mapResultMap">
+    SELECT 
+    a.num,b.id productid,b.name productname,b.price,b.picture
+	FROM
+	    wh_order_details a,
+	    wh_product b
+	WHERE
+	    a.productid = b.id 
+	    AND a.orderid = #{id,jdbcType=BIGINT}
+  </select>
+  
+   <select id="getNextval" resultType="java.lang.Integer">
+  select AUTO_INCREMENT id from INFORMATION_SCHEMA.TABLES  
+	where TABLE_NAME='wh_order'
+  </select>
+  
+  <select id="getAccount" resultType="java.lang.Integer">
+  select sum(a.price * b.num)  from wh_product a,wh_order_details b 
+	where a.id = b.productid and b.orderid = #{orderid,jdbcType=BIGINT}
+  </select>
+</mapper>

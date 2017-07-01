@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.2.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+	<!-- 注解扫描包 -->
+	<!-- 加载图片服务器配置文件
+	<context:property-placeholder location="classpath*:properties/imgpath.properties" ignore-unresolvable="true"/>
+	<context:property-placeholder location="classpath*:properties/baidu.properties" ignore-unresolvable="true"/>
+	 -->
+	<!-- servlet在找页面时，走的是dispatcherServlet路线。找不到的时候会报404
+		加上这个默认的servlet时候，servlet在找不到的时候会去找静态的内容。  -->
+	<!-- <mvc:default-servlet-handler /> -->
+	<mvc:annotation-driven/>
+
+	
+	 <!-- 拦截器 
+    <mvc:interceptors>  
+    	<mvc:interceptor>  
+           <mvc:mapping path="/**" />
+           <mvc:exclude-mapping path="/adinfo/addaginfo"/> 
+ 		   <mvc:exclude-mapping path="/user/testfindmodel"/> 
+ 		   <mvc:exclude-mapping path="/user/cback"/> 
+ 		   <mvc:exclude-mapping path="/user/vback"/> 
+ 		   	   <mvc:exclude-mapping path="/user/getsize"/> 
+ 		     <mvc:exclude-mapping path="/oss/**"/> 
+           <bean class="com.ruibang.interceptor.SessionInterceptor"/>  
+        </mvc:interceptor>
+        -->  
+        <!-- 管理员 
+        <mvc:interceptor>  
+           <mvc:mapping path="/admin/supper/**" />
+           <bean class="com.ruibang.interceptor.SupperAdminInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>  
+           <mvc:mapping path="/admin/operator/**" />
+           <mvc:mapping path="/jexcel/appointment/**" />
+           <mvc:mapping path="/jexcel/adextend/**" />
+           <mvc:mapping path="/file/upload/extendfile/**" />
+           <mvc:mapping path="/file/upload/seat/**" />
+           <mvc:exclude-mapping path="/admin/operator/getAppointmentDetial/**"/>
+           <bean class="com.ruibang.interceptor.OperatorAdminInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>  
+           <mvc:mapping path="/admin/finance/**" />
+           <bean class="com.ruibang.interceptor.FinanceAdminInterceptor"/>
+        </mvc:interceptor>
+	-->
+		<!-- 代理商
+        <mvc:interceptor>  
+           <mvc:mapping path="/agent/**" />
+           <bean class="com.ruibang.interceptor.AgentInterceptor"/>
+        </mvc:interceptor>	
+         -->
+        	<!-- 商户
+        <mvc:interceptor>  
+           <mvc:mapping path="/shop/**" />
+           <bean class="com.ruibang.interceptor.ShopInterceptor"/>
+        </mvc:interceptor>		
+        -->
+		<!-- 广告主 
+        <mvc:interceptor>  
+           <mvc:mapping path="/adver/**" />
+           <mvc:mapping path="/jexcel/data/**" />
+           <bean class="com.ruibang.interceptor.AdverInterceptor"/>
+        </mvc:interceptor>		
+
+
+        <mvc:interceptor>  
+              <mvc:mapping path="/sspagent/**"/> 	 
+
+           <bean class="com.ruibang.interceptor.SspAgentInterceptor"/>
+        </mvc:interceptor>	
+    </mvc:interceptors>
+    -->
+
+	
+</beans>

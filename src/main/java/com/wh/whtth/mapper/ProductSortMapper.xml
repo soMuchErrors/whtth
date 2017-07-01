@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wh.whtth.idao.ProductSortMapper" >
+  <resultMap id="BaseResultMap" type="com.wh.whtth.model.ProductSort" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="shopid" property="shopid" jdbcType="BIGINT" />
+    <result column="sortcode" property="sortcode" jdbcType="INTEGER" />
+    <result column="sortname" property="sortname" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, shopid, sortcode, sortname
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from wh_product_sort
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="listProductSort" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from wh_product_sort
+    where shopid = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from wh_product_sort
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wh.whtth.model.ProductSort" >
+    insert into wh_product_sort (id, shopid, sortcode, 
+      sortname)
+    values (#{id,jdbcType=BIGINT}, #{shopid,jdbcType=BIGINT}, #{sortcode,jdbcType=INTEGER}, 
+      #{sortname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wh.whtth.model.ProductSort" >
+    insert into wh_product_sort
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="shopid != null" >
+        shopid,
+      </if>
+      <if test="sortcode != null" >
+        sortcode,
+      </if>
+      <if test="sortname != null" >
+        sortname,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="shopid != null" >
+        #{shopid,jdbcType=BIGINT},
+      </if>
+      <if test="sortcode != null" >
+        #{sortcode,jdbcType=INTEGER},
+      </if>
+      <if test="sortname != null" >
+        #{sortname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wh.whtth.model.ProductSort" >
+    update wh_product_sort
+    <set >
+      <if test="shopid != null" >
+        shopid = #{shopid,jdbcType=BIGINT},
+      </if>
+      <if test="sortcode != null" >
+        sortcode = #{sortcode,jdbcType=INTEGER},
+      </if>
+      <if test="sortname != null" >
+        sortname = #{sortname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wh.whtth.model.ProductSort" >
+    update wh_product_sort
+    set shopid = #{shopid,jdbcType=BIGINT},
+      sortcode = #{sortcode,jdbcType=INTEGER},
+      sortname = #{sortname,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
