@@ -1,28 +1,25 @@
 package com.wh.whtth.controller.admin;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.alibaba.fastjson.JSONObject;
 import com.wh.whtth.controller.BaseController;
 import com.wh.whtth.model.Shop;
 import com.wh.whtth.model.User;
 import com.wh.whtth.service.AdminService;
-import com.wh.whtth.service.ShopManageService;
-import com.wh.whtth.util.ReqJsonUtil;
 import com.wh.whtth.vo.ShopManageVo;
 import com.wh.whtth.vo.ViewVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/admin")
@@ -30,6 +27,26 @@ public class AdminController extends BaseController{
 	
 	@Autowired
 	private AdminService adminService;
+
+	/**
+	 * 上传图片文件
+	 * @param req
+	 * @param res
+	 * @param img
+     * @return
+     */
+	@RequestMapping(value = "/upload/image",method = RequestMethod.POST)
+	public @ResponseBody String uploadImg(HttpServletRequest req, HttpServletResponse res, @RequestBody MultipartFile img) throws Exception{
+		String originalFilename = img.getOriginalFilename();
+		String newFileName = "";
+		if(img != null && !StringUtils.isEmpty(originalFilename)){
+			newFileName = UUID.randomUUID() + originalFilename.substring(originalFilename.lastIndexOf("."));
+			File newFile = new File(IMG_PATH+newFileName);
+			img.transferTo(newFile);
+
+		}
+		return newFileName;
+	}
 	
 	//新增商家
 	@RequestMapping(value="/shopManage/addShopManager",method = RequestMethod.POST,headers = {})

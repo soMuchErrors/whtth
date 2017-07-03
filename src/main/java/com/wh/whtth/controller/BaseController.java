@@ -1,16 +1,18 @@
 package com.wh.whtth.controller;
 
-import java.io.IOException;
-import java.io.Writer;
+import com.alibaba.fastjson.JSONObject;
+import com.wh.whtth.util.ReqJsonUtil;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.alibaba.fastjson.JSONObject;
-import com.wh.whtth.util.ReqJsonUtil;
-import com.wh.whtth.vo.ShopManageVo;
+import java.io.IOException;
+import java.io.Writer;
 
 public class BaseController {
+
+	@Value("#{'imgpath'}")
+	protected String IMG_PATH;
 
 	public static Object getVo(HttpServletRequest req,Class voclass) throws Exception {
 		Object vo = null;
