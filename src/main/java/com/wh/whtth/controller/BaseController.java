@@ -11,7 +11,7 @@ import java.io.Writer;
 
 public class BaseController {
 
-	protected String IMG_PATH = "/whtth/";
+	protected String IMG_PATH = "/whtthimg/";
 
 	public static Object getVo(HttpServletRequest req,Class voclass) throws Exception {
 		Object vo = null;
