@@ -1,5 +1,7 @@
 package com.wh.whtth.model;
 
+import java.math.BigDecimal;
+
 public class Shop {
     private Long id;
 
@@ -28,6 +30,8 @@ public class Shop {
     private String trade;
 
     private Double pushmoney;
+
+    private BigDecimal corperationmoney;
 
     public Long getId() {
         return id;
@@ -139,5 +143,13 @@ public class Shop {
 
     public void setPushmoney(Double pushmoney) {
         this.pushmoney = pushmoney;
+    }
+
+    public BigDecimal getCorperationmoney() {
+        return corperationmoney;
+    }
+
+    public void setCorperationmoney(BigDecimal corperationmoney) {
+        this.corperationmoney = corperationmoney;
     }
 }

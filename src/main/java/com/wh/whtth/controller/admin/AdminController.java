@@ -41,11 +41,14 @@ public class AdminController extends BaseController{
 		String newFileName = "";
 		if(img != null && !StringUtils.isEmpty(originalFilename)){
 			newFileName = UUID.randomUUID() + originalFilename.substring(originalFilename.lastIndexOf("."));
-			File newFile = new File(IMG_PATH+newFileName);
-			img.transferTo(newFile);
+			File newFile = new File(getRootPath()+IMG_PATH+newFileName);
+			if(!newFile.exists()) {
+				newFile.createNewFile();
+				img.transferTo(newFile);
+			}
 
 		}
-		return newFileName;
+		return IMG_PATH+newFileName;
 	}
 	
 	//新增商家
@@ -53,6 +56,19 @@ public class AdminController extends BaseController{
 	public void addShopManager(HttpServletRequest req,HttpServletResponse res) throws Exception{
 		ShopManageVo vo = (ShopManageVo)getVo(req, ShopManageVo.class);
 		wrint(res, adminService.addShopManager(vo));
+	}
+
+
+	/**
+	 * 行业列表
+	 * @param req
+	 * @param res
+	 * @return
+	 * @throws Exception
+     */
+	@RequestMapping(value = "/shopManage/tradeList",method = RequestMethod.GET)
+	public @ResponseBody Object tradeList(HttpServletRequest req,HttpServletResponse res) throws Exception{
+		return adminService.getTradeList();
 	}
 	
 	//商家管理  有效商家列表

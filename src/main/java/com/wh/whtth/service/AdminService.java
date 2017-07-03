@@ -1,24 +1,18 @@
 package com.wh.whtth.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
-import com.wh.whtth.idao.OrderMapper;
-import com.wh.whtth.idao.ProductMapper;
-import com.wh.whtth.idao.ShopMapper;
-import com.wh.whtth.idao.UserMapper;
+import com.wh.whtth.idao.*;
 import com.wh.whtth.model.Product;
 import com.wh.whtth.model.Shop;
 import com.wh.whtth.model.User;
 import com.wh.whtth.vo.ShopManageVo;
 import com.wh.whtth.vo.ViewVo;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service("adminService")
 public class AdminService {
@@ -34,6 +28,9 @@ public class AdminService {
 	
 	@Resource(name = "orderDao")
 	private OrderMapper orderDao;
+
+	@Resource(name = "baseCodeDao")
+	private BaseCodeMapper baseCodeDao;
 	
 	public Map<String,String> addShopManager(ShopManageVo vo){
 		Map<String,String> rtn = new HashMap<String,String>();
@@ -208,5 +205,10 @@ public class AdminService {
 
 	public Object shoppingInfo(ViewVo vo) {
 		return orderDao.shoppingInfo(vo);
+	}
+
+
+	public Object getTradeList() {
+		return baseCodeDao.showTrade();
 	}
 }
