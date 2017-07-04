@@ -1,22 +1,18 @@
 package com.wh.whtth.controller.user;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.wh.whtth.controller.BaseController;
+import com.wh.whtth.model.ShoppingCart;
+import com.wh.whtth.service.UserService;
+import com.wh.whtth.vo.ViewVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.wh.whtth.controller.BaseController;
-import com.wh.whtth.model.Order;
-import com.wh.whtth.model.OrderDetails;
-import com.wh.whtth.model.ShoppingCart;
-import com.wh.whtth.service.UserService;
-import com.wh.whtth.vo.ViewVo;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")

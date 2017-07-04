@@ -16,10 +16,11 @@
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="trade" property="trade" jdbcType="VARCHAR" />
     <result column="pushmoney" property="pushmoney" jdbcType="DOUBLE" />
+      <result column="corperationmoney" property="corperationmoney" jdbcType="DECIMAL"/>
   </resultMap>
   <sql id="Base_Column_List" >
     id, name, userid, shopdesc, picture, discount, paymentcode, paymentlink, postage, 
-    telphone, address, state, trade, pushmoney
+    telphone, address, state, trade, pushmoney,corperationmoney
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
