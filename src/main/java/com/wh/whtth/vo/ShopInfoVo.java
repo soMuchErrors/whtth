@@ -1,15 +1,14 @@
 package com.wh.whtth.vo;
 
-import java.util.List;
-import java.util.Map;
 
-import com.wh.whtth.model.Product;
+import java.util.List;
+
 import com.wh.whtth.model.Shop;
 
 public class ShopInfoVo {
 	private Shop shop;
 	
-	private Map<String,List<Product>>  products;
+	private List<SortProductVo>  sortProducts;
 
 	public Shop getShop() {
 		return shop;
@@ -19,12 +18,12 @@ public class ShopInfoVo {
 		this.shop = shop;
 	}
 
-	public Map<String, List<Product>> getProducts() {
-		return products;
+	public List<SortProductVo> getSortProducts() {
+		return sortProducts;
 	}
 
-	public void setProducts(Map<String, List<Product>> products) {
-		this.products = products;
+	public void setSortProducts(List<SortProductVo> sortProducts) {
+		this.sortProducts = sortProducts;
 	}
 
 }

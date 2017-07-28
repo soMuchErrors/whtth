@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wh.whtth.idao.FinanceLogMapper" >
+  <resultMap id="BaseResultMap" type="com.wh.whtth.model.FinanceLog" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="userid" property="userid" jdbcType="BIGINT" />
+    <result column="cashiermode" property="cashiermode" jdbcType="INTEGER" />
+    <result column="money" property="money" jdbcType="DOUBLE" />
+    <result column="timestamp" property="timestamp" jdbcType="BIGINT" />
+    <result column="ymd" property="ymd" jdbcType="VARCHAR" />
+    <result column="ym" property="ym" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="VARCHAR" />
+    <result column="orderid" property="orderid" jdbcType="BIGINT" />
+    <result column="loginfo" property="loginfo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userid, cashiermode, money, timestamp, ymd, ym, year, orderid, loginfo
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from wh_finance_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from wh_finance_log
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wh.whtth.model.FinanceLog" >
+    insert into wh_finance_log (id, userid, cashiermode, 
+      money, timestamp, ymd, 
+      ym, year, orderid, loginfo
+      )
+    values (#{id,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, #{cashiermode,jdbcType=INTEGER}, 
+      #{money,jdbcType=DOUBLE}, #{timestamp,jdbcType=BIGINT}, #{ymd,jdbcType=VARCHAR}, 
+      #{ym,jdbcType=VARCHAR}, #{year,jdbcType=VARCHAR}, #{orderid,jdbcType=BIGINT}, #{loginfo,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wh.whtth.model.FinanceLog" >
+    insert into wh_finance_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="cashiermode != null" >
+        cashiermode,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="timestamp != null" >
+        timestamp,
+      </if>
+      <if test="ymd != null" >
+        ymd,
+      </if>
+      <if test="ym != null" >
+        ym,
+      </if>
+      <if test="year != null" >
+        year,
+      </if>
+      <if test="orderid != null" >
+        orderid,
+      </if>
+      <if test="loginfo != null" >
+        loginfo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="cashiermode != null" >
+        #{cashiermode,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="timestamp != null" >
+        #{timestamp,jdbcType=BIGINT},
+      </if>
+      <if test="ymd != null" >
+        #{ymd,jdbcType=VARCHAR},
+      </if>
+      <if test="ym != null" >
+        #{ym,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null" >
+        #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=BIGINT},
+      </if>
+      <if test="loginfo != null" >
+        #{loginfo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wh.whtth.model.FinanceLog" >
+    update wh_finance_log
+    <set >
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="cashiermode != null" >
+        cashiermode = #{cashiermode,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="timestamp != null" >
+        timestamp = #{timestamp,jdbcType=BIGINT},
+      </if>
+      <if test="ymd != null" >
+        ymd = #{ymd,jdbcType=VARCHAR},
+      </if>
+      <if test="ym != null" >
+        ym = #{ym,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null" >
+        year = #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="orderid != null" >
+        orderid = #{orderid,jdbcType=BIGINT},
+      </if>
+      <if test="loginfo != null" >
+        loginfo = #{loginfo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wh.whtth.model.FinanceLog" >
+    update wh_finance_log
+    set userid = #{userid,jdbcType=BIGINT},
+      cashiermode = #{cashiermode,jdbcType=INTEGER},
+      money = #{money,jdbcType=DOUBLE},
+      timestamp = #{timestamp,jdbcType=BIGINT},
+      ymd = #{ymd,jdbcType=VARCHAR},
+      ym = #{ym,jdbcType=VARCHAR},
+      year = #{year,jdbcType=VARCHAR},
+      orderid = #{orderid,jdbcType=BIGINT},
+      loginfo = #{loginfo,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

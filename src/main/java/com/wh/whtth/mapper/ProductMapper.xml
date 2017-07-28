@@ -27,37 +27,88 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
   
-  <select id="checkPendingProducts" resultMap="BaseResultMap" parameterType="com.wh.whtth.vo.ViewVo" >
-    select 
-    <include refid="Base_Column_List" />
-    from wh_product
-    where
-    auditstate = 1
-    and state = 1
-    order by id
-    limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+  <select id="checkPendingProducts" resultMap="mapResultMap" parameterType="com.wh.whtth.vo.ViewVo" >
+	  SELECT 
+	    a.id id, a.name, b.name shopname, price, c.sortname
+	  FROM
+	    wh_product a,
+	    wh_shop b,
+	    wh_product_sort c
+	  WHERE
+	    a.shopid = b.id 
+	    AND a.sortid = c.id
+	    AND auditstate = 1
+	    AND a.state = 1
+	    order by id
+	    limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
   </select>
   
-  <select id="listValidProduct" resultMap="BaseResultMap" parameterType="com.wh.whtth.vo.ViewVo" >
-    select 
-    <include refid="Base_Column_List" />
-    from wh_product
-    where
- 	state = 1
- 	and shopid = #{id,jdbcType=BIGINT}
-    order by id
-    limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+  <select id="countPendingProducts" resultType="java.lang.Integer" >
+	  SELECT 
+	    count(1)
+	  FROM
+	    wh_product a,
+	    wh_shop b,
+	    wh_product_sort c
+	  WHERE
+	    a.shopid = b.id 
+	    AND a.sortid = c.id
+	    AND auditstate = 1
+	    AND a.state = 1
   </select>
+  
+  <select id="listValidProduct" resultMap="mapResultMap" parameterType="com.wh.whtth.vo.ViewVo" >
+    SELECT 
+	    a.id id, a.name, price, c.sortname
+	  FROM
+	    wh_product a,
+	    wh_product_sort c
+	  WHERE
+		a.sortid = c.id
+	    AND a.state = 1
+ 		and a.shopid = #{id,jdbcType=BIGINT}
+    	order by id
+    	limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+  </select>
+  
+  <select id="countValidProduct" resultType="java.lang.Integer" >
+	  SELECT 
+	    count(1)
+	  FROM
+	    wh_product a,
+	    wh_product_sort c
+	  WHERE
+		a.sortid = c.id
+	    AND a.state = 1
+ 		and a.shopid = #{id,jdbcType=BIGINT}
+  </select>
+  
   <select id="listInvalidProduct" resultMap="BaseResultMap" parameterType="com.wh.whtth.vo.ViewVo" >
-    select 
-    <include refid="Base_Column_List" />
-    from wh_product
-    where
- 	state = 0
- 	and shopid = #{id,jdbcType=BIGINT}
-    order by id
-    limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+     SELECT 
+	    a.id id, a.name, price, c.sortname
+	  FROM
+	    wh_product a,
+	    wh_product_sort c
+	  WHERE
+		a.sortid = c.id
+	    AND a.state = 0
+ 		and a.shopid = #{id,jdbcType=BIGINT}
+    	order by id
+    	limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
   </select>
+  
+  <select id="countInvalidProduct" resultType="java.lang.Integer" >
+	  SELECT 
+	    count(1)
+	  FROM
+	    wh_product a,
+	    wh_product_sort c
+	  WHERE
+		a.sortid = c.id
+	    AND a.state = 0
+ 		and a.shopid = #{id,jdbcType=BIGINT}
+  </select>
+  
   <resultMap id="mapResultMap" type="java.util.Map" />
    <select id="listValidProductById" resultMap="mapResultMap">
     select 
@@ -67,22 +118,34 @@
     a.sortid = b.id
  	and state = 1
  	and auditstate = 2
- 	and shopid = #{id,jdbcType=BIGINT}
- 	and sortid = #{sortid,jdbcType=BIGINT}
+ 	and a.shopid = #{id,jdbcType=VARCHAR}
+ 	and a.sortid = #{sortid,jdbcType=VARCHAR}
  	order by id
  	limit 0,4
   </select>
   
-   <select id="getShopinfoBySortid" resultMap="mapResultMap">
+  <select id="countlistValidProductById" resultType="java.lang.Integer">
     select 
-    a.id,a.picture,a.name,a.sortid,b.sortname
+    	count(1)
     from wh_product a,wh_product_sort b
     where
     a.sortid = b.id
  	and state = 1
  	and auditstate = 2
- 	and shopid = #{id,jdbcType=BIGINT}
- 	and sortid = #{sortid,jdbcType=BIGINT}
+ 	and a.shopid = #{id,jdbcType=VARCHAR}
+ 	and a.sortid = #{sortid,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="getShopinfoBySortid" resultMap="mapResultMap">
+    select 
+    a.id,a.picture,a.name,a.sortid,b.sortname,a.price,a.title
+    from wh_product a,wh_product_sort b
+    where
+    a.sortid = b.id
+ 	and state = 1
+ 	and auditstate = 2
+ 	and a.shopid = #{id,jdbcType=BIGINT}
+ 	and a.sortid = #{sortid,jdbcType=BIGINT}
  	order by id
   </select>
   

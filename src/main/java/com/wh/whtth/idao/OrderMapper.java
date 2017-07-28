@@ -24,7 +24,9 @@ public interface OrderMapper {
     int updateByPrimaryKey(Order record);
     
     List<Map<String,String>> shoppingInfo(ViewVo vo);
-
+    
+    int countShoppingInfo(@Param("id")String id);
+    
 	List<Map<String,String>> showOrders(ViewVo vo);
 
 	Map<String, String> SelectOrderinfoById(@Param("id")String id);
@@ -34,4 +36,8 @@ public interface OrderMapper {
 	int getNextval();
 	
 	int getAccount(@Param("orderid")String orderid);
+
+	int countOrders(@Param("id")String id);
+
+	Map<String,Object> listOrders(Map<String,Object> vo);
 }

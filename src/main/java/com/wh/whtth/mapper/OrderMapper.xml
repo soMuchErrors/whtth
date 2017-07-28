@@ -11,9 +11,12 @@
     <result column="postmanid" property="postmanid" jdbcType="BIGINT" />
     <result column="createtime" property="createtime" jdbcType="VARCHAR" />
     <result column="enddtime" property="enddtime" jdbcType="VARCHAR" />
+    <result column="express" property="express" jdbcType="VARCHAR" />
+    <result column="trackingnum" property="trackingnum" jdbcType="VARCHAR" />
+    <result column="reason" property="reason" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, userid, shopid, addressid, amount, state, postmanid, createtime, enddtime
+    id, userid, shopid, addressid, amount, state, postmanid, createtime, enddtime,express,trackingnum,reason
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -65,6 +68,15 @@
       <if test="enddtime != null" >
         enddtime,
       </if>
+      <if test="express != null" >
+        express,
+      </if>
+      <if test="trackingnum != null" >
+        trackingnum,
+      </if>
+      <if test="reason != null" >
+        reason,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -93,6 +105,15 @@
       </if>
       <if test="enddtime != null" >
         #{enddtime,jdbcType=VARCHAR},
+      </if>
+      <if test="express != null" >
+        #{express,jdbcType=VARCHAR},
+      </if>
+      <if test="trackingnum != null" >
+        #{trackingnum,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null" >
+        #{reason,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -123,6 +144,15 @@
       <if test="enddtime != null" >
         enddtime = #{enddtime,jdbcType=VARCHAR},
       </if>
+      <if test="express != null" >
+        express = #{express,jdbcType=VARCHAR},
+      </if>
+      <if test="trackingnum != null" >
+        trackingnum = #{trackingnum,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null" >
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -139,37 +169,104 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   	<resultMap id="mapResultMap" type="java.util.Map"/>
-    <select id="shoppingInfo" resultMap="mapResultMap" parameterType="com.wh.whtth.vo.ViewVo" >
+   <select id="shoppingInfo" resultMap="mapResultMap" parameterType="com.wh.whtth.vo.ViewVo" >
     SELECT 
-    a.id, a.shopid, b.name, a.amount, a.createtime
+    a.id, b.name shopname, a.amount, a.createtime
 	FROM
 	    wh_order a,
 	    wh_shop b
 	WHERE
 	    a.shopid = b.id AND a.userid = #{id,jdbcType=BIGINT}
 	ORDER BY a.id
-	limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+	limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+  </select>
+  
+  <select id="countShoppingInfo" resultType="java.lang.Integer"  >
+    SELECT 
+    	count(1)
+	FROM
+	    wh_order a,
+	    wh_shop b
+	WHERE
+	    a.shopid = b.id AND a.userid = #{id,jdbcType=BIGINT}
   </select>
   
   <select id="showOrders" resultMap="mapResultMap" parameterType="com.wh.whtth.vo.ViewVo" >
     SELECT 
-    a.userid,b.name username,c.fulladdress,b.phonenum,a.id orderid
+		a.id orderid,
+	    a.userid,
+	    d.name username,
+	    CONCAT((SELECT 
+	                    name
+	                FROM
+	                    wh_city
+	                WHERE
+	                    code = c.province),
+	            (SELECT 
+	                    name
+	                FROM
+	                    wh_city
+	                WHERE
+	                    code = c.city),
+	            (SELECT 
+	                    name
+	                FROM
+	                    wh_city
+	                WHERE
+	                    code = c.street),
+	            c.fulladdress) fulladdress,
+	    d.phonenum telphone,
+	    a.amount
 	FROM
-	    wh_order a,
-	    wh_user b,
-	    wh_shipping_address c
+	    wh_order a
+	        LEFT JOIN
+	    wh_shipping_address c ON a.addressid = c.id
+	        LEFT JOIN
+	    wh_shop b ON a.shopid = b.id
+	    	LEFT JOIN
+	    wh_user d ON a.userid = d.id
 	WHERE
-	    a.userid = b.id 
-	    and a.addressid = c.id
-	    AND a.shopid = #{id,jdbcType=BIGINT}
+		a.shopid = #{id,jdbcType=BIGINT}
 	    and a.state = 1
 	ORDER BY a.id
-	limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+	limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+  </select>
+  
+ <select id="countOrders" resultType="java.lang.Integer" >
+    SELECT 
+    	count(1)
+	FROM
+	    wh_order a
+	        LEFT JOIN
+	    wh_shipping_address c ON a.addressid = c.id
+	        LEFT JOIN
+	    wh_shop b ON a.userid = b.id
+	WHERE
+		a.shopid = #{id,jdbcType=BIGINT}
+	    and a.state = 1
   </select>
   
   <select id="SelectOrderinfoById" resultType="java.util.Map">
     SELECT 
-    a.userid,b.name username,c.fulladdress,b.phonenum,a.id orderid,a.createtime
+    a.userid,b.name username,CONCAT((SELECT 
+	                    name
+	                FROM
+	                    wh_city
+	                WHERE
+	                    code = c.province),
+	            (SELECT 
+	                    name
+	                FROM
+	                    wh_city
+	                WHERE
+	                    code = c.city),
+	            (SELECT 
+	                    name
+	                FROM
+	                    wh_city
+	                WHERE
+	                    code = c.street),
+	            c.fulladdress) fulladdress,b.phonenum,a.id orderid,a.createtime,a.amount,a.express,a.trackingnum
 	FROM
 	    wh_order a,
 	    wh_user b,
@@ -182,7 +279,7 @@
   
    <select id="getDetailsById" resultMap="mapResultMap">
     SELECT 
-    a.num,b.id productid,b.name productname,b.price,b.picture
+    a.num,b.id productid,b.name productname,b.price,b.picture,b.title
 	FROM
 	    wh_order_details a,
 	    wh_product b
@@ -199,5 +296,50 @@
   <select id="getAccount" resultType="java.lang.Integer">
   select sum(a.price * b.num)  from wh_product a,wh_order_details b 
 	where a.id = b.productid and b.orderid = #{orderid,jdbcType=BIGINT}
+  </select>
+  
+  <select id="listOrders" resultMap="mapResultMap" parameterType="java.util.Map" >
+    SELECT 
+	    a.id orderid,
+	    e.picture picture,
+	    e.name productname,
+	    c.name username,
+	    c.telphone,
+	    CONCAT((SELECT 
+	                    name
+	                FROM
+	                    wh_city
+	                WHERE
+	                    code = c.province),
+	            (SELECT 
+	                    name
+	                FROM
+	                    wh_city
+	                WHERE
+	                    code = c.city),
+	            (SELECT 
+	                    name
+	                FROM
+	                    wh_city
+	                WHERE
+	                    code = c.street),
+	            c.fulladdress) fulladdress,
+	    a.amount
+	FROM
+	    wh_order a
+	        LEFT JOIN
+	    wh_shipping_address c ON a.addressid = c.id
+	        LEFT JOIN
+	    wh_shop b ON a.userid = b.id
+	        LEFT JOIN
+	    wh_order_details d ON a.id = d.orderid
+	        LEFT JOIN
+	    wh_product e ON d.productid = e.id
+	where 
+		a.userid = #{id,jdbcType=BIGINT}
+	    and a.state = #{state,jdbcType=INTEGER}
+	GROUP BY a.id
+	order by a.id desc
+	limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
   </select>
 </mapper>

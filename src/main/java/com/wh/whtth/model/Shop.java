@@ -21,19 +21,29 @@ public class Shop {
 
     private Double postage;
 
-    private Integer telphone;
+    private String telphone;
 
     private String address;
 
     private Integer state;
 
     private String trade;
+    
+    private String tradename;
 
     private Double pushmoney;
 
     private BigDecimal corperationmoney;
+    	
+    public String getTradename() {
+		return tradename;
+	}
 
-    public Long getId() {
+	public void setTradename(String tradename) {
+		this.tradename = tradename;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -105,11 +115,11 @@ public class Shop {
         this.postage = postage;
     }
 
-    public Integer getTelphone() {
+    public String getTelphone() {
         return telphone;
     }
 
-    public void setTelphone(Integer telphone) {
+    public void setTelphone(String telphone) {
         this.telphone = telphone;
     }
 

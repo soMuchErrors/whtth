@@ -8,6 +8,8 @@ public class BaseCode {
     private String codenum;
 
     private String codename;
+    
+    
 
     public Long getId() {
         return id;

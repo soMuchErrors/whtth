@@ -26,8 +26,18 @@ public class Product {
     private String title;
     
     private Long shopid;
+    
+    private String publishtime;
+    
+    public String getPublishtime() {
+		return publishtime;
+	}
 
-    public Long getSortid() {
+	public void setPublishtime(String publishtime) {
+		this.publishtime = publishtime;
+	}
+
+	public Long getSortid() {
 		return sortid;
 	}
 

@@ -1,10 +1,13 @@
 package com.wh.whtth.controller.shop;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -101,10 +104,20 @@ public class ShopController extends BaseController{
 		wrint(res, shopService.showinfo(req.getParameter("id")));
 	}
 	
+	//店鋪信息编辑
+	@RequestMapping(value="/shop/editShopinfo",headers = {})
+	public void editShopinfo(@RequestBody Map<String,String> vo,HttpServletResponse res) throws Exception{
+		wrint(res, shopService.editShopinfo(vo));
+	}
+	
 	//订单列表
 	@RequestMapping(value="/order/showOrders",method = RequestMethod.POST,headers = {})
 	public void showOrders(HttpServletRequest req,HttpServletResponse res) throws Exception{
 		ViewVo vo = (ViewVo)getVo(req, ViewVo.class);
+		if(vo.getId()==null){
+			System.out.println(req.getSession().getAttribute("shopid").toString());
+			vo.setId(req.getSession().getAttribute("shopid").toString());
+		}
 		wrint(res, shopService.showOrders(vo));
 	}
 	

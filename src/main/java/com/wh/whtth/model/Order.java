@@ -18,7 +18,16 @@ public class Order {
     private String createtime;
 
     private String enddtime;
-
+    
+    //快递公司
+    private String express;
+    
+    //快递单号
+    private String trackingnum;
+    
+    //退款原因
+    private String reason;
+    
     public Long getId() {
         return id;
     }
@@ -90,4 +99,30 @@ public class Order {
     public void setEnddtime(String enddtime) {
         this.enddtime = enddtime;
     }
+
+	public String getExpress() {
+		return express;
+	}
+
+	public void setExpress(String express) {
+		this.express = express;
+	}
+
+	public String getTrackingnum() {
+		return trackingnum;
+	}
+
+	public void setTrackingnum(String trackingnum) {
+		this.trackingnum = trackingnum;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+    
+    
 }

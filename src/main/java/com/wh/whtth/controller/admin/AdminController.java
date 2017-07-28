@@ -6,6 +6,7 @@ import com.wh.whtth.model.User;
 import com.wh.whtth.service.AdminService;
 import com.wh.whtth.vo.ShopManageVo;
 import com.wh.whtth.vo.ViewVo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -17,8 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -27,29 +30,6 @@ public class AdminController extends BaseController{
 	
 	@Autowired
 	private AdminService adminService;
-
-	/**
-	 * 上传图片文件
-	 * @param req
-	 * @param res
-	 * @param img
-     * @return
-     */
-	@RequestMapping(value = "/upload/image",method = RequestMethod.POST)
-	public @ResponseBody String uploadImg(HttpServletRequest req, HttpServletResponse res, @RequestBody MultipartFile img) throws Exception{
-		String originalFilename = img.getOriginalFilename();
-		String newFileName = "";
-		if(img != null && !StringUtils.isEmpty(originalFilename)){
-			newFileName = UUID.randomUUID() + originalFilename.substring(originalFilename.lastIndexOf("."));
-			File newFile = new File(getRootPath()+IMG_PATH+newFileName);
-			if(!newFile.exists()) {
-				newFile.createNewFile();
-				img.transferTo(newFile);
-			}
-
-		}
-		return IMG_PATH+newFileName;
-	}
 	
 	//新增商家
 	@RequestMapping(value="/shopManage/addShopManager",method = RequestMethod.POST,headers = {})
@@ -57,8 +37,7 @@ public class AdminController extends BaseController{
 		ShopManageVo vo = (ShopManageVo)getVo(req, ShopManageVo.class);
 		wrint(res, adminService.addShopManager(vo));
 	}
-
-
+	
 	/**
 	 * 行业列表
 	 * @param req
@@ -73,9 +52,7 @@ public class AdminController extends BaseController{
 	
 	//商家管理  有效商家列表
 	@RequestMapping(value="/shopManage/listValidShops",method = RequestMethod.POST,headers = {})
-	public @ResponseBody List<Shop> listValidShops(@RequestBody ViewVo vo,HttpServletRequest req,HttpServletResponse res) throws Exception{
-//		ViewVo vo = (ViewVo)getVo(req, ViewVo.class);
-//		wrint(res, adminService.listValidShops(vo));
+	public @ResponseBody Map<String,Object> listValidShops(@RequestBody ViewVo vo,HttpServletRequest req,HttpServletResponse res){
 		return adminService.listValidShops(vo);
 	}
 	
@@ -139,6 +116,20 @@ public class AdminController extends BaseController{
 	public void addUser(HttpServletRequest req,HttpServletResponse res) throws Exception{
 		User vo = (User)getVo(req, User.class);
 		wrint(res, adminService.addUser(vo));
+	}
+	
+	//有效的会员列表
+	@RequestMapping(value="/userManage/listValidUser",method = RequestMethod.POST,headers = {})
+	public void listValidUser(HttpServletRequest req,HttpServletResponse res) throws Exception{
+		ViewVo vo = (ViewVo)getVo(req, ViewVo.class);
+		wrint(res, adminService.listValidUser(vo));
+	}
+	
+	//无效的会员列表
+	@RequestMapping(value="/userManage/listInvalidUser",method = RequestMethod.POST,headers = {})
+	public void listInvalidUser(HttpServletRequest req,HttpServletResponse res) throws Exception{
+		ViewVo vo = (ViewVo)getVo(req, ViewVo.class);
+		wrint(res, adminService.listInvalidUser(vo));
 	}
 	
 	//下架会员

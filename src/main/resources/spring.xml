@@ -28,9 +28,16 @@
     <!-- 自动装载 @Autowire @Resource @PostConstruct @PreDestroy -->
     <context:annotation-config />
     
-    <context:component-scan base-package="com.wh.whtth" />
-	
-	
+    <context:component-scan base-package="com.wh.whtth" /> 
+	<mvc:interceptors>  
+    	<mvc:interceptor>  
+           	<mvc:mapping path="/user/**"/> 
+           	<mvc:mapping path="/admin/**"/> 
+           	<mvc:mapping path="/shop/**"/> 
+           <bean class="com.wh.whtth.interceptor.BaseInterceptor"/>  
+        </mvc:interceptor>
+    </mvc:interceptors>
+
 	<!-- 加载数据库属性配置文件 -->
 	<context:property-placeholder location="classpath:properties/db.properties"  ignore-unresolvable="true"/>
 	<context:property-placeholder location="classpath:log4j.properties"  ignore-unresolvable="true"/>
@@ -85,6 +92,9 @@
 		<property name="globalRollbackOnParticipationFailure" value="false" />
 	</bean> 
 	
+	<!-- 声明使用注解式事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
 	<!-- <bean id="serviceCheck" class="com.ruibang.util.ServiceTimeLog"/>  -->
 	<!-- 配置事务通知属性
  	<tx:advice id="txAdvice" transaction-manager="transactionManager">
@@ -125,9 +135,8 @@
 
 	<!-- 文件上传 -->
   	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
-     	<property name="maxUploadSize" value="-1" />   
- 	</bean> 
-	
+     	<property name="maxUploadSize" value="1024000"></property>
+ 	</bean>  
 	<!-- 视图解释器 -->
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
 		<property name="mediaTypes">

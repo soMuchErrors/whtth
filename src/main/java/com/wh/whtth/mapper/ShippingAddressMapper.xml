@@ -125,4 +125,24 @@
       telphone = #{telphone,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <resultMap id="mapResultMap" type="java.util.Map" />
+  <select id="listShippingAddress" resultMap="mapResultMap">
+  	SELECT 
+	    id,
+	    userid,
+	    province provinceCode,
+	    (select name from wh_city where code = a.province) province,
+	    city cityCode,
+		(select name from wh_city where code = a.city) city,
+	    street streetCode,
+	    (select name from wh_city where code = a.street) street,
+	    fulladdress,
+	    name,
+	    telphone
+	FROM
+	    wh.wh_shipping_address a
+	WHERE
+	    userid = #{userid,jdbcType=BIGINT}
+  	order by id
+  </select>
 </mapper>

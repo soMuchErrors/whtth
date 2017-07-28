@@ -14,6 +14,9 @@ public class ConstantsUtil {
 	public final static String voSubfix = "Vo";
 	public final static String serviceDomain = "com.wh.whtth.service.impl.";
 	public final static String serviceSubfix = "Service";
+	
+	public final static String verifySubfix = "verify:";
+	
 	static{
 		baseParams.put("shopManage", getHashMap("shopManage"));
 	}
