@@ -11,7 +11,7 @@
     <result column="paymentcode" property="paymentcode" jdbcType="VARCHAR" />
     <result column="paymentlink" property="paymentlink" jdbcType="VARCHAR" />
     <result column="postage" property="postage" jdbcType="DOUBLE" />
-    <result column="telphone" property="telphone" jdbcType="INTEGER" />
+    <result column="telphone" property="telphone" jdbcType="VARCHAR" />
     <result column="address" property="address" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="trade" property="trade" jdbcType="VARCHAR" />
@@ -20,32 +20,63 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, name, userid, shopdesc, picture, discount, paymentcode, paymentlink, postage, 
-    telphone, address, state, trade, pushmoney,corperationmoney
+    telphone, address, trade, pushmoney,corperationmoney
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
-    <include refid="Base_Column_List" />
-    from wh_shop
+    <include refid="Base_Column_List" />,
+    (select codename from wh_base_code where codetype =2 and codenum = a.trade) tradename
+    from wh_shop a
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <select id="listValidShops" resultMap="BaseResultMap" parameterType="com.wh.whtth.vo.ViewVo" >
+  
+  <select id="selectByUserid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
-    <include refid="Base_Column_List" />
-    from wh_shop
+    <include refid="Base_Column_List" />,
+    (select codename from wh_base_code where codetype =2 and codenum = a.trade) tradename
+    from wh_shop a
+    where userid = #{userid,jdbcType=BIGINT}
+  </select>
+  
+  <select id="listValidShops" resultMap="mapResultMap" parameterType="com.wh.whtth.vo.ViewVo" >
+    select 
+    a.id id,a.name name,c.name username,a.telphone,b.codename trade,a.discount,a.pushmoney
+    from wh_shop a,wh_base_code b,wh_user c
+    where
+    a.trade = b.codenum
+    and a.userid = c.id
+    and b.codetype = 2
+    and a.state = 1
+    order by id
+    limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+  </select>
+  <select id="countValidShops" resultType="java.lang.Integer">
+  	select count(1)  
+  	from wh_shop
     where
     state = 1
-    order by id
-    limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
   </select>
-  <select id="listInvalidShops" resultMap="BaseResultMap" parameterType="com.wh.whtth.vo.ViewVo" >
+  
+  <select id="listInvalidShops" resultMap="mapResultMap" parameterType="com.wh.whtth.vo.ViewVo" >
     select 
-    <include refid="Base_Column_List" />
-    from wh_shop
+    a.id id,a.name name,c.name username,a.telphone,b.codename trade,a.discount,a.pushmoney
+    from wh_shop a,wh_base_code b,wh_user c
+    where
+    a.trade = b.codenum
+    and a.userid = c.id
+    and b.codetype = 2
+    and a.state = 0
+    order by id
+    limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+  </select>
+  
+  <select id="countInvalidShops" resultType="java.lang.Integer">
+  	select count(1)  
+  	from wh_shop
     where
     state = 0
-    order by id
-    limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
   </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from wh_shop
     where id = #{id,jdbcType=BIGINT}
@@ -279,7 +310,7 @@
 	WHERE
 	    A.userid = B.id
 	ORDER BY a.id
-	LIMIT #{start,jdbcType=INTEGER} , #{pagesize,jdbcType=INTEGER}
+	LIMIT #{start,jdbcType=INTEGER} , #{end,jdbcType=INTEGER}
 	  </select>
 	  
 	  <select id="viewById" parameterType="com.wh.whtth.vo.ViewVo" resultMap="shopManageResultMap">
@@ -321,14 +352,48 @@
 	  
 	 <resultMap id="mapResultMap" type="java.util.Map" />
 	 <select id="showShops" parameterType="com.wh.whtth.vo.ViewVo" resultMap="mapResultMap">
-	 select 
-	 	id,picture,address,name
-	 from 
-	 	wh_shop
+	SELECT 
+	    a.id, a.picture, a.address, a.name, b.codename tradename
+	FROM
+	    wh_shop a,
+	    wh_base_code b
+	WHERE
+	    a.trade = b.codenum AND b.codetype = 2
 	 <if test="trade != null" >
-	 	where trade = #{trade,jdbcType=VARCHAR}
+	 	AND trade = #{trade,jdbcType=VARCHAR}
 	 </if>
-	 order by id
-	 limit #{start,jdbcType=INTEGER} , #{pagesize,jdbcType=INTEGER}
+	ORDER BY id
+	 limit #{start,jdbcType=INTEGER} , #{end,jdbcType=INTEGER}
+	 </select>
+	 
+	 
+	 <select id="showinfo" resultType="java.util.Map">
+		SELECT 
+		    a.id,
+		    a.name shopname,
+		    b.name username,
+		    a.telphone,
+		    b.email,
+		    a.address,
+		    a.picture,
+		    a.shopdesc
+		FROM
+		    wh_shop a,
+		    wh_user b
+		WHERE
+		    a.userid = b.id
+		    and a.id = #{id,jdbcType=BIGINT}
+	 </select>
+	 
+	 <select id="selectByUserid" resultType="java.util.Map">
+		SELECT 
+		    a.name shopname,
+		    a.picture
+		FROM
+		    wh_shop a,
+		    wh_user b
+		WHERE
+		    a.userid = b.id
+		    and a.userid = #{userid,jdbcType=BIGINT}
 	 </select>
 </mapper>

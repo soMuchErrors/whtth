@@ -26,15 +26,27 @@ public interface ProductMapper {
     Integer checkProductBySort(String sortid);
     
     //查看待审核的产品列表
-    List<Product> checkPendingProducts(ViewVo vo);
+    List<Map<String,String>> checkPendingProducts(ViewVo vo);
+    
+    int countPendingProducts();
     
     //上架产品列表
-    List<Product> listValidProduct(ViewVo vo);
-
+    List<Map<String,String>> listValidProduct(ViewVo vo);
+    
+    int countValidProduct(@Param("id")String id);
+    
     //上架产品列表
-    List<Product> listInvalidProduct(ViewVo vo);
+    List<Map<String, String>> listInvalidProduct(ViewVo vo);
+    
+    int countInvalidProduct(@Param("id")String id);
     
     List<Map<String,String>> listValidProductById(@Param("id")String id,@Param("sortid")String sortid);
     
+    int countlistValidProductById(@Param("id")String id,@Param("sortid")String sortid);
+    
     List<Map<String,String>> getShopinfoBySortid(@Param("id")String id,@Param("sortid")String sortid);
+
+	
+
+	
 }
