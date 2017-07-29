@@ -43,6 +43,4 @@ public interface ShopMapper {
 
 	Map<String,String> showinfo(String id);
 
-	Map<String, String> selectByUserid(@Param("userid")String userid);
-	
 }

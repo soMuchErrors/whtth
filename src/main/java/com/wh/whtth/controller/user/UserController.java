@@ -254,10 +254,24 @@ public class UserController extends BaseController{
 	
 	//报表模块
 	//1.过去5个月的消费情况
-	@RequestMapping(value="/user/consumptionStatus",method = RequestMethod.POST,headers = {})
+	@RequestMapping(value="/user/consumptionStatus",headers = {})
 	public void consumptionStatus(HttpServletRequest req,HttpServletResponse res) throws Exception{
 		wrint(res, userService.consumptionStatus(req.getParameter("userid"),req.getParameter("ym")));
 	}
+	
+	//2.消费结构分析
+	@RequestMapping(value="/user/consumptionAnalyze",headers = {})
+	public void consumptionAnalyze(HttpServletRequest req,HttpServletResponse res) throws Exception{
+		wrint(res, userService.consumptionAnalyze(req.getParameter("userid"),req.getParameter("ym")));
+	}
+	
+	//3.消费明细
+	@RequestMapping(value="/user/consumptionDetail",method = RequestMethod.POST,headers = {})
+	public void consumptionDetail(HttpServletRequest req,HttpServletResponse res,@RequestBody Map<String,String> params) throws Exception{
+		wrint(res, userService.consumptionDetail(params));
+	}
+	
+	/** ========================================================================================================= */
 	
 	//获取省列表
 	@RequestMapping(value="/city/listProvince",headers = {})

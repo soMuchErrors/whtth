@@ -433,11 +433,13 @@ public class UserService {
 
 		String buyer = params.get("from");
 		String seller = params.get("to");
-		Map<String, String> obj = shopDao.selectByUserid(seller);
-
+		Shop shop = shopDao.selectByUserid(Long.parseLong(seller));
+		Map<String,String> obj = new HashMap<String,String>();
 		String key = System.currentTimeMillis() + "";
 		obj.put("orderid", key);
-
+		obj.put("shopname", shop.getName());
+		obj.put("picture", shop.getPicture());
+		
 		JedisUtil.hset(key, "buyer", buyer);
 		JedisUtil.hset(key, "seller", seller);
 		JedisUtil.hset(key, "flag", "0");
@@ -543,6 +545,34 @@ public class UserService {
 	public Object consumptionStatus(String userid, String ym) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", financeLogDao.consumptionStatus(userid,ym));
+		map.put("message", new Message("1"));
 		return map;
 	}
+
+	public Object consumptionAnalyze(String userid, String ym) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("obj", financeLogDao.consumptionAnalyze(userid,ym));
+		map.put("message", new Message("1"));
+		return map;
+	}
+
+	/**
+	 * 
+	 * @param params
+	 * userid 
+	 * ym
+	 * page
+	 * pagesize
+	 * @return
+	 */
+	public Object consumptionDetail(Map<String, String> params) {
+		int page = Integer.parseInt(params.get("page"));
+		int pagesize = Integer.parseInt(params.get("pagesize"));
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", financeLogDao.consumptionDetail(params.get("userid"),params.get("ym"),(page-1)*pagesize,pagesize));
+		map.put("message", new Message("1"));
+		return map;
+	}
+	
+	
 }

@@ -48,7 +48,7 @@
     and b.codetype = 2
     and a.state = 1
     order by id
-    limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+    limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
   </select>
   <select id="countValidShops" resultType="java.lang.Integer">
   	select count(1)  
@@ -67,7 +67,7 @@
     and b.codetype = 2
     and a.state = 0
     order by id
-    limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+    limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
   </select>
   
   <select id="countInvalidShops" resultType="java.lang.Integer">
@@ -310,7 +310,7 @@
 	WHERE
 	    A.userid = B.id
 	ORDER BY a.id
-	LIMIT #{start,jdbcType=INTEGER} , #{end,jdbcType=INTEGER}
+	LIMIT #{start,jdbcType=INTEGER} , #{pagesize,jdbcType=INTEGER}
 	  </select>
 	  
 	  <select id="viewById" parameterType="com.wh.whtth.vo.ViewVo" resultMap="shopManageResultMap">
@@ -363,7 +363,7 @@
 	 	AND trade = #{trade,jdbcType=VARCHAR}
 	 </if>
 	ORDER BY id
-	 limit #{start,jdbcType=INTEGER} , #{end,jdbcType=INTEGER}
+	 limit #{start,jdbcType=INTEGER} , #{pagesize,jdbcType=INTEGER}
 	 </select>
 	 
 	 
@@ -385,15 +385,4 @@
 		    and a.id = #{id,jdbcType=BIGINT}
 	 </select>
 	 
-	 <select id="selectByUserid" resultType="java.util.Map">
-		SELECT 
-		    a.name shopname,
-		    a.picture
-		FROM
-		    wh_shop a,
-		    wh_user b
-		WHERE
-		    a.userid = b.id
-		    and a.userid = #{userid,jdbcType=BIGINT}
-	 </select>
 </mapper>

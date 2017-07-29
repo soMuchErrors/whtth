@@ -178,7 +178,7 @@
 	WHERE
 	    a.shopid = b.id AND a.userid = #{id,jdbcType=BIGINT}
 	ORDER BY a.id
-	limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+	limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
   </select>
   
   <select id="countShoppingInfo" resultType="java.lang.Integer"  >
@@ -229,7 +229,7 @@
 		a.shopid = #{id,jdbcType=BIGINT}
 	    and a.state = 1
 	ORDER BY a.id
-	limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+	limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
   </select>
   
  <select id="countOrders" resultType="java.lang.Integer" >
@@ -340,6 +340,6 @@
 	    and a.state = #{state,jdbcType=INTEGER}
 	GROUP BY a.id
 	order by a.id desc
-	limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+	limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
   </select>
 </mapper>

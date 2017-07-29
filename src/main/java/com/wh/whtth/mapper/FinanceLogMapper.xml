@@ -149,4 +149,33 @@
       loginfo = #{loginfo,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  
+  <resultMap id="mapResultMap" type="java.util.Map"/>
+  <select id="consumptionStatus" resultMap="mapResultMap">
+  	SELECT 
+	    SUM(money) value, ym
+	FROM
+	    wh.wh_finance_log
+	WHERE
+	    cashiermode = 1
+	    and userid = #{userid,jdbcType=BIGINT}
+	    and ym = #{ym,jdbcType=VARCHAR}
+	GROUP BY ym
+	order by ym
+  </select>
+  
+  <select id="consumptionAnalyze" resultMap="mapResultMap">
+	SELECT 
+	    SUM(money) totalcost,
+	    SUM(IF(orderid IS NULL, 0, 1)) onlinecost,
+	    SUM(IF(orderid IS NULL, 1, 0)) offlinecost
+	FROM
+	    wh.wh_finance_log
+		WHERE
+		    cashiermode = 1
+		    and userid = #{userid,jdbcType=BIGINT}
+		    and ym = #{ym,jdbcType=VARCHAR}
+		GROUP BY ym
+	order by ym
+  </select>
 </mapper>

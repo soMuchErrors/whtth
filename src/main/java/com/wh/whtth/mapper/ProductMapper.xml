@@ -40,7 +40,7 @@
 	    AND auditstate = 1
 	    AND a.state = 1
 	    order by id
-	    limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+	    limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
   </select>
   
   <select id="countPendingProducts" resultType="java.lang.Integer" >
@@ -68,7 +68,7 @@
 	    AND a.state = 1
  		and a.shopid = #{id,jdbcType=BIGINT}
     	order by id
-    	limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+    	limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
   </select>
   
   <select id="countValidProduct" resultType="java.lang.Integer" >
@@ -94,7 +94,7 @@
 	    AND a.state = 0
  		and a.shopid = #{id,jdbcType=BIGINT}
     	order by id
-    	limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+    	limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
   </select>
   
   <select id="countInvalidProduct" resultType="java.lang.Integer" >
