@@ -6,6 +6,7 @@
     <result column="userid" property="userid" jdbcType="BIGINT" />
     <result column="productid" property="productid" jdbcType="BIGINT" />
     <result column="shopid" property="shopid" jdbcType="BIGINT" />
+    <result column="num" property="num" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, userid, productid, shopid
@@ -41,6 +42,9 @@
       <if test="shopid != null" >
         shopid,
       </if>
+      <if test="num != null" >
+        num,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -54,6 +58,9 @@
       </if>
       <if test="shopid != null" >
         #{shopid,jdbcType=BIGINT},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -95,7 +102,7 @@
     from wh_shopping_cart a,wh_shop b
     where 
     a.shopid = b.id
-    and userid = #{userid,jdbcType=BIGINT}
+    and a.userid = #{userid,jdbcType=BIGINT}
     group by a.shopid,b.name,b.picture
   </select>
   

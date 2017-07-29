@@ -21,23 +21,24 @@
     id, username, password, name, phonenum, nickname, idcard_num, user_type, balance, 
     subaccout, paypassword, picture, email, state
   </sql>
+  <resultMap id="mapResultMap" type="java.util.Map"/>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
-    <include refid="Base_Column_List" />
+    	id,name,phonenum,nickname,idcard_num,user_type,balance,picture,email
     from wh_user
     where id = #{id,jdbcType=BIGINT}
   </select>
   
   <select id="selectByPhonenum" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
-    <include refid="Base_Column_List" />
+    id,name,phonenum,nickname,idcard_num,user_type,balance,picture,email
     from wh_user
     where phonenum = #{phonenum,jdbcType=VARCHAR}
   </select>
 
    <select id="selectByIdcard" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
-    <include refid="Base_Column_List" />
+    id,name,phonenum,nickname,idcard_num,user_type,balance,picture,email
     from wh_user
     where idcard_num = #{idcard,jdbcType=VARCHAR}
   </select>
@@ -211,4 +212,90 @@
       state = #{state,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  
+  <select id="login" resultType="java.util.Map">	    
+		SELECT 
+		    a.id,
+		    a.name,
+		    phonenum,
+		    nickname,
+		    idcard_num,
+		    user_type,
+		    balance,
+		    a.picture,
+		    email,
+		    if(ifnull(paypassword,0)=0,0,1) hasPaypassword,
+		    b.id shopid
+		FROM
+		    wh.wh_user a
+		        LEFT JOIN
+		    wh.wh_shop b ON a.id = b.userid
+		WHERE
+		    username = #{username,jdbcType=VARCHAR}
+			AND password = #{password,jdbcType=VARCHAR}
+			AND a.state = 1
+  </select>
+  
+  <select id="listValidUser" resultMap="mapResultMap" parameterType="com.wh.whtth.vo.ViewVo">
+	SELECT 
+	    id,
+	    name,
+	    phonenum,
+	    nickname,
+	    case
+		 when user_type = 0 then '管理员'
+	     when user_type = 1 then '店家'
+	     when user_type = 2 then '普通会员'
+	     else '子会员'
+	     end as user_type,
+	    balance,
+	    email
+	FROM
+	    wh.wh_user
+	WHERE
+	    state = 1
+	order by id 
+	limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+  </select>
+  
+  <select id="countValidUser" resultType="java.lang.Integer">
+  	SELECT 
+	    count(1)
+	FROM
+	    wh.wh_user
+	WHERE
+	    state = 1
+  </select>
+  
+  
+   <select id="listInvalidUser" resultMap="mapResultMap" parameterType="com.wh.whtth.vo.ViewVo">
+	SELECT 
+	    id,
+	    name,
+	    phonenum,
+	    nickname,
+	    case
+		 when user_type = 0 then '管理员'
+	     when user_type = 1 then '店家'
+	     when user_type = 2 then '普通会员'
+	     else '子会员'
+	     end as user_type,
+	    balance,
+	    email
+	FROM
+	    wh.wh_user
+	WHERE
+	    state = 0
+	order by id 
+	limit #{start,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+  </select>
+  
+  <select id="countInvalidUser" resultType="java.lang.Integer">
+  	SELECT 
+	    count(1)
+	FROM
+	    wh.wh_user
+	WHERE
+	    state = 0
+  </select>
 </mapper>

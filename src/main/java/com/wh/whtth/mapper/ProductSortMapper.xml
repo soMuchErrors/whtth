@@ -16,9 +16,10 @@
     from wh_product_sort
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <select id="listProductSort" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <resultMap id="mapResultMap" type="java.util.Map" />
+  <select id="listProductSort" resultMap="mapResultMap">
     select 
-    <include refid="Base_Column_List" />
+    id,sortname
     from wh_product_sort
     where shopid = #{id,jdbcType=BIGINT}
   </select>

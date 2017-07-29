@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.wh.whtth.model.Shop;
@@ -19,7 +20,9 @@ public interface ShopMapper {
     int insertSelective(Shop record);
 
     Shop selectByPrimaryKey(Long id);
-
+   
+    Shop selectByUserid(@Param("userid") Long userid);
+    
     int updateByPrimaryKeySelective(Shop record);
 
     int updateByPrimaryKey(Shop record);
@@ -28,9 +31,16 @@ public interface ShopMapper {
     
     List<ShopManageVo> viewById(ViewVo vo);
     
-    List<Shop> listValidShops(ViewVo vo);
-    List<Shop> listInvalidShops(ViewVo vo);
+    List<Map<String,String>> listValidShops(ViewVo vo);
+    
+    int countValidShops();
+    
+    List<Map<String,String>> listInvalidShops(ViewVo vo);
+    
+    int countInvalidShops();
 
 	List<Map<String,String>> showShops(ViewVo vo);
-	
+
+	Map<String,String> showinfo(String id);
+
 }

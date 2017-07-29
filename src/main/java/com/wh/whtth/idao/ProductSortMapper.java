@@ -1,7 +1,9 @@
 package com.wh.whtth.idao;
 
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.wh.whtth.model.ProductSort;
@@ -20,5 +22,5 @@ public interface ProductSortMapper {
 
     int updateByPrimaryKey(ProductSort record);
     
-    List<ProductSort> listProductSort(String id);
+    List<Map<String,Object>> listProductSort(@Param("id")String id);
 }

@@ -83,7 +83,7 @@
   <resultMap id="MapResultMap" type="java.util.Map" />
   <select id="showTrade" resultMap="MapResultMap">
   	select 
-    <include refid="Base_Column_List" />
+    codenum,codename,picture
     from wh_base_code
     where codetype = 2
   </select>

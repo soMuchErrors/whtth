@@ -9,8 +9,15 @@ public class ViewVo {
 	private int pagesize;
 	private int page;
 	private int start;
+	private int end;
 	private String id;
 	private String trade;
+	public int getEnd() {
+		return end;
+	}
+	public void setEnd(int end) {
+		this.end = end;
+	}
 	public int getPagesize() {
 		return pagesize;
 	}

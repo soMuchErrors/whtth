@@ -8,8 +8,18 @@ public class ShoppingCart {
     private Long productid;
 
     private Long shopid;
+    
+    private Integer num;
+    
+    public Integer getNum() {
+		return num;
+	}
 
-    public Long getId() {
+	public void setNum(Integer num) {
+		this.num = num;
+	}
+
+	public Long getId() {
         return id;
     }
 
